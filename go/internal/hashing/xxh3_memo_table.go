@@ -26,8 +26,6 @@ import (
 	"reflect"
 	"unsafe"
 
-	"github.com/apache/arrow/go/v12/parquet"
-
 	"github.com/zeebo/xxh3"
 )
 
@@ -35,6 +33,10 @@ import (
 
 type TypeTraits interface {
 	BytesRequired(n int) int
+}
+
+type ByteSlice interface {
+	Bytes() []byte
 }
 
 // MemoTable interface for hash tables and dictionary encoding.
@@ -241,16 +243,11 @@ func (s *BinaryMemoTable) Size() int {
 }
 
 // helper function to easily return a byte slice for any given value
-// regardless of the type if it's a []byte, parquet.ByteArray,
-// parquet.FixedLenByteArray or string.
+// regardless of the type.
 func (BinaryMemoTable) valAsByteSlice(val interface{}) []byte {
 	switch v := val.(type) {
 	case []byte:
 		return v
-	case parquet.ByteArray:
-		return *(*[]byte)(unsafe.Pointer(&v))
-	case parquet.FixedLenByteArray:
-		return *(*[]byte)(unsafe.Pointer(&v))
 	case string:
 		var out []byte
 		h := (*reflect.StringHeader)(unsafe.Pointer(&v))
@@ -260,6 +257,9 @@ func (BinaryMemoTable) valAsByteSlice(val interface{}) []byte {
 		s.Cap = h.Len
 		return out
 	default:
+		if v, ok := val.(ByteSlice); ok {
+			return v.Bytes()
+		}
 		panic("invalid type for binarymemotable")
 	}
 }
@@ -271,11 +271,10 @@ func (BinaryMemoTable) getHash(val interface{}) uint64 {
 		return hashString(v, 0)
 	case []byte:
 		return hash(v, 0)
-	case parquet.ByteArray:
-		return hash(*(*[]byte)(unsafe.Pointer(&v)), 0)
-	case parquet.FixedLenByteArray:
-		return hash(*(*[]byte)(unsafe.Pointer(&v)), 0)
 	default:
+		if v, ok := val.(ByteSlice); ok {
+			return hash(v.Bytes(), 0)
+		}
 		panic("invalid type for binarymemotable")
 	}
 }
@@ -288,10 +287,10 @@ func (b *BinaryMemoTable) appendVal(val interface{}) {
 		b.builder.AppendString(v)
 	case []byte:
 		b.builder.Append(v)
-	case parquet.ByteArray:
-		b.builder.Append(*(*[]byte)(unsafe.Pointer(&v)))
-	case parquet.FixedLenByteArray:
-		b.builder.Append(*(*[]byte)(unsafe.Pointer(&v)))
+	default:
+		if v, ok := val.(ByteSlice); ok {
+			b.builder.Append(v.Bytes())
+		}
 	}
 }
 
