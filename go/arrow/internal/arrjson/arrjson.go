@@ -21,11 +21,12 @@ package arrjson
 import (
 	"bytes"
 	"encoding/hex"
-	"encoding/json"
 	"fmt"
 	"math/big"
 	"strconv"
 	"strings"
+
+	"github.com/apache/arrow/go/v12/internal/json"
 
 	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/apache/arrow/go/v12/arrow/array"

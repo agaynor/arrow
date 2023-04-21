@@ -23,9 +23,10 @@ import (
 	"strings"
 	"unsafe"
 
+	"github.com/apache/arrow/go/v12/internal/json"
+
 	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/apache/arrow/go/v12/arrow/memory"
-	"github.com/goccy/go-json"
 )
 
 // String represents an immutable sequence of variable-length UTF-8 strings.

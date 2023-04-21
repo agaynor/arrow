@@ -22,11 +22,12 @@ import (
 	"strings"
 	"sync/atomic"
 
+	"github.com/apache/arrow/go/v12/internal/json"
+
 	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/apache/arrow/go/v12/arrow/bitutil"
 	"github.com/apache/arrow/go/v12/arrow/internal/debug"
 	"github.com/apache/arrow/go/v12/arrow/memory"
-	"github.com/goccy/go-json"
 )
 
 // FixedSizeList represents an immutable sequence of N array values.
@@ -283,7 +284,6 @@ func (b *FixedSizeListBuilder) newData() (data *Data) {
 
 	return
 }
-
 
 func (b *FixedSizeListBuilder) AppendValueFromString(s string) error {
 	dec := json.NewDecoder(strings.NewReader(s))

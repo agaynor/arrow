@@ -24,7 +24,7 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/goccy/go-json"
+	"github.com/apache/arrow/go/v12/internal/json"
 
 	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/apache/arrow/go/v12/arrow/array"

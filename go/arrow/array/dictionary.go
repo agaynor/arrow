@@ -25,6 +25,8 @@ import (
 	"sync/atomic"
 	"unsafe"
 
+	"github.com/apache/arrow/go/v12/internal/json"
+
 	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/apache/arrow/go/v12/arrow/bitutil"
 	"github.com/apache/arrow/go/v12/arrow/decimal128"
@@ -33,7 +35,6 @@ import (
 	"github.com/apache/arrow/go/v12/arrow/memory"
 	"github.com/apache/arrow/go/v12/internal/hashing"
 	"github.com/apache/arrow/go/v12/internal/utils"
-	"github.com/goccy/go-json"
 )
 
 // Dictionary represents the type for dictionary-encoded data with a data
@@ -45,12 +46,12 @@ import (
 //
 // For example, the array:
 //
-//      ["foo", "bar", "foo", "bar", "foo", "bar"]
+//	["foo", "bar", "foo", "bar", "foo", "bar"]
 //
 // with dictionary ["bar", "foo"], would have the representation of:
 //
-//      indices: [1, 0, 1, 0, 1, 0]
-//      dictionary: ["bar", "foo"]
+//	indices: [1, 0, 1, 0, 1, 0]
+//	dictionary: ["bar", "foo"]
 //
 // The indices in principle may be any integer type.
 type Dictionary struct {

@@ -24,12 +24,13 @@ import (
 	"strings"
 	"sync/atomic"
 
+	"github.com/apache/arrow/go/v12/internal/json"
+
 	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/apache/arrow/go/v12/arrow/encoded"
 	"github.com/apache/arrow/go/v12/arrow/internal/debug"
 	"github.com/apache/arrow/go/v12/arrow/memory"
 	"github.com/apache/arrow/go/v12/internal/utils"
-	"github.com/goccy/go-json"
 )
 
 // RunEndEncoded represents an array containing two children:
@@ -75,22 +76,24 @@ func (r *RunEndEncoded) Release() {
 // run, only over the range of run values inside the logical offset/length
 // range of the parent array.
 //
-// Example
+// # Example
 //
 // For this array:
-//     RunEndEncoded: { Offset: 150, Length: 1500 }
-//         RunEnds: [ 1, 2, 4, 6, 10, 1000, 1750, 2000 ]
-//         Values:  [ "a", "b", "c", "d", "e", "f", "g", "h" ]
+//
+//	RunEndEncoded: { Offset: 150, Length: 1500 }
+//	    RunEnds: [ 1, 2, 4, 6, 10, 1000, 1750, 2000 ]
+//	    Values:  [ "a", "b", "c", "d", "e", "f", "g", "h" ]
 //
 // LogicalValuesArray will return the following array:
-//     [ "f", "g" ]
+//
+//	[ "f", "g" ]
 //
 // This is because the offset of 150 tells it to skip the values until
 // "f" which corresponds with the logical offset (the run from 10 - 1000),
 // and stops after "g" because the length + offset goes to 1650 which is
 // within the run from 1000 - 1750, corresponding to the "g" value.
 //
-// Note
+// # Note
 //
 // The return from this needs to be Released.
 func (r *RunEndEncoded) LogicalValuesArray() arrow.Array {
@@ -110,15 +113,17 @@ func (r *RunEndEncoded) LogicalValuesArray() arrow.Array {
 // that are adjusted so the new array can have an offset of 0. As a result
 // this method can be expensive to call for an array with a non-zero offset.
 //
-// Example
+// # Example
 //
 // For this array:
-//     RunEndEncoded: { Offset: 150, Length: 1500 }
-//         RunEnds: [ 1, 2, 4, 6, 10, 1000, 1750, 2000 ]
-//         Values:  [ "a", "b", "c", "d", "e", "f", "g", "h" ]
+//
+//	RunEndEncoded: { Offset: 150, Length: 1500 }
+//	    RunEnds: [ 1, 2, 4, 6, 10, 1000, 1750, 2000 ]
+//	    Values:  [ "a", "b", "c", "d", "e", "f", "g", "h" ]
 //
 // LogicalRunEndsArray will return the following array:
-//     [ 850, 1500 ]
+//
+//	[ 850, 1500 ]
 //
 // This is because the offset of 150 tells us to skip all run-ends less
 // than 150 (by finding the physical offset), and we adjust the run-ends
@@ -126,7 +131,7 @@ func (r *RunEndEncoded) LogicalValuesArray() arrow.Array {
 // so we know we don't want to go past the 1750 run end. Thus the last
 // run-end is determined by doing: min(1750 - 150, 1500) = 1500.
 //
-// Note
+// # Note
 //
 // The return from this needs to be Released
 func (r *RunEndEncoded) LogicalRunEndsArray(mem memory.Allocator) arrow.Array {

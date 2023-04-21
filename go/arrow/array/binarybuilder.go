@@ -24,10 +24,11 @@ import (
 	"reflect"
 	"sync/atomic"
 
+	"github.com/apache/arrow/go/v12/internal/json"
+
 	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/apache/arrow/go/v12/arrow/internal/debug"
 	"github.com/apache/arrow/go/v12/arrow/memory"
-	"github.com/goccy/go-json"
 )
 
 // A BinaryBuilder is used to build a Binary array using the Append methods.

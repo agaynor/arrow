@@ -17,9 +17,10 @@
 package schema
 
 import (
-	"encoding/json"
 	"fmt"
 	"math"
+
+	"github.com/apache/arrow/go/v12/internal/json"
 
 	"github.com/apache/arrow/go/v12/parquet"
 	"github.com/apache/arrow/go/v12/parquet/internal/debug"

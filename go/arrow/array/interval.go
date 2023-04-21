@@ -23,11 +23,12 @@ import (
 	"strings"
 	"sync/atomic"
 
+	"github.com/apache/arrow/go/v12/internal/json"
+
 	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/apache/arrow/go/v12/arrow/bitutil"
 	"github.com/apache/arrow/go/v12/arrow/internal/debug"
 	"github.com/apache/arrow/go/v12/arrow/memory"
-	"github.com/goccy/go-json"
 )
 
 func NewIntervalData(data arrow.ArrayData) arrow.Array {
@@ -56,7 +57,7 @@ func NewMonthIntervalData(data arrow.ArrayData) *MonthInterval {
 	return a
 }
 
-func (a *MonthInterval) Value(i int) arrow.MonthInterval            { return a.values[i] }
+func (a *MonthInterval) Value(i int) arrow.MonthInterval { return a.values[i] }
 func (a *MonthInterval) ValueStr(i int) string {
 	if a.IsNull(i) {
 		return NullValueStr
@@ -287,7 +288,7 @@ func (b *MonthIntervalBuilder) AppendValueFromString(s string) error {
 	b.Append(arrow.MonthInterval(v))
 	return nil
 }
- 
+
 func (b *MonthIntervalBuilder) UnmarshalOne(dec *json.Decoder) error {
 	var v *arrow.MonthInterval
 	if err := dec.Decode(&v); err != nil {
@@ -341,7 +342,7 @@ func NewDayTimeIntervalData(data arrow.ArrayData) *DayTimeInterval {
 	return a
 }
 
-func (a *DayTimeInterval) Value(i int) arrow.DayTimeInterval              { return a.values[i] }
+func (a *DayTimeInterval) Value(i int) arrow.DayTimeInterval { return a.values[i] }
 func (a *DayTimeInterval) ValueStr(i int) string {
 	if a.IsNull(i) {
 		return NullValueStr

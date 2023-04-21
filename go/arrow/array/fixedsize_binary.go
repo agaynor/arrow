@@ -22,8 +22,9 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/apache/arrow/go/v12/internal/json"
+
 	"github.com/apache/arrow/go/v12/arrow"
-	"github.com/goccy/go-json"
 )
 
 // A type which represents an immutable sequence of fixed-length binary strings.

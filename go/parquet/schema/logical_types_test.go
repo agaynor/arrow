@@ -17,8 +17,9 @@
 package schema_test
 
 import (
-	"encoding/json"
 	"testing"
+
+	"github.com/apache/arrow/go/v12/internal/json"
 
 	"github.com/apache/arrow/go/v12/parquet"
 	"github.com/apache/arrow/go/v12/parquet/schema"

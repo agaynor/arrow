@@ -17,9 +17,10 @@
 package arrjson
 
 import (
-	"encoding/json"
 	"fmt"
 	"io"
+
+	"github.com/apache/arrow/go/v12/internal/json"
 
 	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/apache/arrow/go/v12/arrow/array"

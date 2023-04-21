@@ -23,11 +23,12 @@ import (
 	"strings"
 	"sync/atomic"
 
+	"github.com/apache/arrow/go/v12/internal/json"
+
 	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/apache/arrow/go/v12/arrow/bitutil"
 	"github.com/apache/arrow/go/v12/arrow/internal/debug"
 	"github.com/apache/arrow/go/v12/arrow/memory"
-	"github.com/goccy/go-json"
 )
 
 // Struct represents an ordered sequence of relative types.
@@ -118,7 +119,8 @@ func (a *Struct) String() string {
 // newStructFieldWithParentValidityMask returns the Interface at fieldIndex
 // with a nullBitmapBytes adjusted according on the parent struct nullBitmapBytes.
 // From the docs:
-//   "When reading the struct array the parent validity bitmap takes priority."
+//
+//	"When reading the struct array the parent validity bitmap takes priority."
 func (a *Struct) newStructFieldWithParentValidityMask(fieldIndex int) arrow.Array {
 	field := a.Field(fieldIndex)
 	nullBitmapBytes := field.NullBitmapBytes()
@@ -363,7 +365,7 @@ func (b *StructBuilder) newData() (data *Data) {
 
 func (b *StructBuilder) AppendValueFromString(s string) error {
 	if !strings.HasPrefix(s, "{") && !strings.HasSuffix(s, "}") {
-		return fmt.Errorf("%w: invalid string for struct should be be of form: {*}", arrow.ErrInvalid,)
+		return fmt.Errorf("%w: invalid string for struct should be be of form: {*}", arrow.ErrInvalid)
 	}
 	dec := json.NewDecoder(strings.NewReader(s))
 	return b.UnmarshalOne(dec)

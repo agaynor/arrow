@@ -20,8 +20,8 @@ import (
 	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/apache/arrow/go/v12/arrow/bitutil"
 	"github.com/apache/arrow/go/v12/arrow/internal/debug"
-	"github.com/apache/arrow/go/v12/arrow/memory"	
-	"github.com/goccy/go-json"
+	"github.com/apache/arrow/go/v12/arrow/memory"
+	"github.com/apache/arrow/go/v12/internal/json"
 )
 
 {{range .In}}
@@ -202,7 +202,7 @@ func (b *{{.Name}}Builder) AppendValueFromString(s string) error {
       b.AppendNull()
       return err
     }
-    b.Append(arrow.Date64FromTime(tm))  
+    b.Append(arrow.Date64FromTime(tm))
   {{else if or (eq .Name "Time32") -}}
   	val, err := arrow.Time32FromString(s, b.dtype.Unit)
     if err != nil {
@@ -224,7 +224,7 @@ func (b *{{.Name}}Builder) AppendValueFromString(s string) error {
       return err
     }
     b.Append(v)
-  {{else if (eq .Name "Duration") -}}	
+  {{else if (eq .Name "Duration") -}}
     return fmt.Errorf("%w: AppendValueFromString not implemented for Duration", ErrNotImplemented)
   {{else if or (eq .Name "Int8") (eq .Name "Int16") (eq .Name "Int32") (eq .Name "Int64") -}}
     v, err := strconv.ParseInt(s, 10, {{.Size}})
@@ -344,7 +344,7 @@ func (b *{{.Name}}Builder) UnmarshalOne(dec *json.Decoder) error {
 					break
 				}
 			}
-		
+
 			return &json.UnmarshalTypeError{
 				Value: v,
 				Type: reflect.TypeOf({{.QualifiedType}}(0)),

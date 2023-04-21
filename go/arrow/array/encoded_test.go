@@ -17,9 +17,10 @@
 package array_test
 
 import (
-	"encoding/json"
 	"strings"
 	"testing"
+
+	"github.com/apache/arrow/go/v12/internal/json"
 
 	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/apache/arrow/go/v12/arrow/array"
@@ -390,7 +391,7 @@ func TestRunEndEncodedUnmarshalNestedJSON(t *testing.T) {
 	defer bldr.Release()
 
 	const testJSON = `
-		[null, [1, 2, 3], [1, 2, 3], [1, 2, 3], [1, null, 3], [4, 5, null], null, null, 
+		[null, [1, 2, 3], [1, 2, 3], [1, 2, 3], [1, null, 3], [4, 5, null], null, null,
 		[4, 5, null], [4, 5, null], [4, 5, null]]
 	`
 

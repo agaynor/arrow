@@ -25,12 +25,13 @@ import (
 	"strings"
 	"sync/atomic"
 
+	"github.com/apache/arrow/go/v12/internal/json"
+
 	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/apache/arrow/go/v12/arrow/bitutil"
 	"github.com/apache/arrow/go/v12/arrow/decimal128"
 	"github.com/apache/arrow/go/v12/arrow/internal/debug"
 	"github.com/apache/arrow/go/v12/arrow/memory"
-	"github.com/goccy/go-json"
 )
 
 // A type which represents an immutable sequence of 128-bit decimal values.
@@ -51,7 +52,7 @@ func (a *Decimal128) Value(i int) decimal128.Num { return a.values[i] }
 func (a *Decimal128) ValueStr(i int) string {
 	if a.IsNull(i) {
 		return NullValueStr
-	}	else {
+	} else {
 		return a.GetOneForMarshal(i).(string)
 	}
 }

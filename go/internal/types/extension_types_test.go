@@ -18,8 +18,9 @@ package types_test
 
 import (
 	"bytes"
-	"encoding/json"
 	"testing"
+
+	"github.com/apache/arrow/go/v12/internal/json"
 
 	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/apache/arrow/go/v12/arrow/array"

@@ -20,9 +20,10 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/apache/arrow/go/v12/internal/json"
+
 	"github.com/apache/arrow/go/v12/arrow"
 	"github.com/apache/arrow/go/v12/arrow/float16"
-	"github.com/goccy/go-json"
 )
 
 // A type which represents an immutable sequence of Float16 values.
@@ -39,7 +40,7 @@ func NewFloat16Data(data arrow.ArrayData) *Float16 {
 }
 
 func (a *Float16) Value(i int) float16.Num { return a.values[i] }
-func (a *Float16) ValueStr(i int) string { return a.Value(i).String()}
+func (a *Float16) ValueStr(i int) string   { return a.Value(i).String() }
 
 func (a *Float16) Values() []float16.Num { return a.values }
 
