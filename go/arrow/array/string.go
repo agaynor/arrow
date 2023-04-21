@@ -80,16 +80,12 @@ func (a *String) ValueOffsets() []int32 {
 	return a.offsets[beg:end]
 }
 
-func (a *String) ValueBytes() (ret []byte) {
+func (a *String) ValueBytes() []byte {
 	beg := a.array.data.offset
 	end := beg + a.array.data.length
 	data := a.values[a.offsets[beg]:a.offsets[end]]
 
-	s := (*reflect.SliceHeader)(unsafe.Pointer(&ret))
-	s.Data = (*reflect.StringHeader)(unsafe.Pointer(&data)).Data
-	s.Len = len(data)
-	s.Cap = len(data)
-	return
+	return []byte(data)
 }
 
 func (a *String) String() string {
@@ -216,16 +212,12 @@ func (a *LargeString) ValueOffsets() []int64 {
 	return a.offsets[beg:end]
 }
 
-func (a *LargeString) ValueBytes() (ret []byte) {
+func (a *LargeString) ValueBytes() []byte {
 	beg := a.array.data.offset
 	end := beg + a.array.data.length
 	data := a.values[a.offsets[beg]:a.offsets[end]]
 
-	s := (*reflect.SliceHeader)(unsafe.Pointer(&ret))
-	s.Data = (*reflect.StringHeader)(unsafe.Pointer(&data)).Data
-	s.Len = len(data)
-	s.Cap = len(data)
-	return
+	return []byte(data)
 }
 
 func (a *LargeString) String() string {
