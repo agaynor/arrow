@@ -105,9 +105,7 @@ func hashFloat64(val float64, alg uint64) uint64 {
 }
 
 func hashString(val string, alg uint64) uint64 {
-	buf := *(*[]byte)(unsafe.Pointer(&val))
-	(*reflect.SliceHeader)(unsafe.Pointer(&buf)).Cap = len(val)
-	return hash(buf, alg)
+	return hash([]byte(val), alg)
 }
 
 // prime constants used for slightly increasing the hash quality further
